@@ -1,4 +1,4 @@
-package com.beryllinus.hotel_service.security.filter;
+/*package com.beryllinus.hotel_service.security.filter;
 
 import com.beryllinus.hotel_service.security.util.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -42,3 +42,4 @@ public class JwtFilter  extends OncePerRequestFilter {
 
     }
 }
+*/

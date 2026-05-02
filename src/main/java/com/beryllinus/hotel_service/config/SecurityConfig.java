@@ -1,4 +1,4 @@
-package com.beryllinus.hotel_service.config;
+/*package com.beryllinus.hotel_service.config;
 
 import com.beryllinus.hotel_service.security.filter.JwtFilter;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +25,8 @@ public class SecurityConfig {
                 )
                 // Route security
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/public/**").permitAll()
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/auth/**", "/public/**", "/api/**").permitAll()
+//                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().denyAll()
                 )
                 // Plug your filter HERE
@@ -37,3 +37,4 @@ public class SecurityConfig {
     }
 
 }
+*/

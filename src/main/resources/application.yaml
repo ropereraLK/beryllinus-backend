@@ -1,7 +1,0 @@
-auth:
-  provider: oauth0
-
-spring:
-  data:
-    mongodb:
-      uri: ${MONGO_URI}

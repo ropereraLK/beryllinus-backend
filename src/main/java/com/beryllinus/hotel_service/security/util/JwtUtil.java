@@ -1,4 +1,4 @@
-package com.beryllinus.hotel_service.security.util;
+/*package com.beryllinus.hotel_service.security.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -46,3 +46,4 @@ public class JwtUtil {
                 .getPayload();
     }
 }
+*/
