@@ -2,28 +2,49 @@ package com.beryllinus.hotel_service.model.room;
 
 import com.beryllinus.hotel_service.enumuration.Currency;
 import com.beryllinus.hotel_service.enumuration.RoomClassType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "room_class")
 public class RoomClass {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Enumerated(value = EnumType.STRING)
+
     private RoomClassType roomClassType;
     private String description;
+
     private boolean isActive;
-    private Date activeStartDate;
-    private Date activeEndDate;
-    private double priceLocal;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal priceLocal;
+    @Enumerated(EnumType.STRING)
     private Currency priceLocalCurrency;
-    private double priceInternational;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal priceInternational;
+    @Enumerated(EnumType.STRING)
     private Currency priceInternationalCurrency;
     private boolean isLocalBookingActive;
     private boolean isInternationalBookingActive;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

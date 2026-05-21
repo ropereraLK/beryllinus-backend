@@ -1,20 +1,45 @@
 package com.beryllinus.hotel_service.model.room;
 
-import com.beryllinus.hotel_service.enumuration.RoomClassType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-//Represents the physically existing room
+
+/***
+ * @ ROOM
+ * id: 1
+ * RoomClassType: EXECUTIVE
+ * roomNumber: 401
+ */
+@Entity
+@Table(name = "room")
 public class Room {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private RoomClassType roomClassType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_class_id")
+    private RoomClass roomClass;
+
     private String roomNumber;
+
+    private boolean isActive;
+    private boolean isLocalBookingActive;
+    private boolean isInternationalBookingActive;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @Override
     public boolean equals(Object o) {
