@@ -12,11 +12,12 @@ import java.util.Optional;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
+    List<Room> findAllByIsActive(boolean isActive);
 
 //    @Query("""
 //                SELECT r
 //                FROM Room r
-//                WHERE r.id = :roomId
+//                WHERE isActive = true
 //                AND :targetDate BETWEEN r.startDate AND r.endDate
 //            """)
 //    Optional<List<Room>> findRoomsByRoomIdAndDate(

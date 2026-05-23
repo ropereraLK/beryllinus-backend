@@ -3,16 +3,18 @@ package com.beryllinus.hotel_service.service;
 import com.beryllinus.hotel_service.exceptions.RoomConfigNotFoundException;
 import com.beryllinus.hotel_service.exceptions.RoomNotFoundException;
 import com.beryllinus.hotel_service.model.room.Room;
+import com.beryllinus.hotel_service.model.room.RoomClass;
 import com.beryllinus.hotel_service.model.room.RoomConfig;
+import com.beryllinus.hotel_service.repository.RoomClassRepository;
 import com.beryllinus.hotel_service.repository.RoomConfigRepository;
 import com.beryllinus.hotel_service.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class OverlapDetectionService {
@@ -20,6 +22,9 @@ public class OverlapDetectionService {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private RoomClassRepository roomClassRepository;
 
     public OverlapDetectionService(RoomConfigRepository roomConfigRepository) {
         this.roomConfigRepository = roomConfigRepository;
@@ -51,10 +56,21 @@ public class OverlapDetectionService {
      * @param roomId: 401
      * @param date:   2015-01-28
      */
-    public RoomConfig getRoom(int roomId, LocalDate date) throws RoomNotFoundException {
-        Optional<Room> room = roomRepository.findById(roomId);
-        if (room.isEmpty()){
-            throw new RoomNotFoundException();
-        }
+//    public RoomConfig getRoom(int roomId, LocalDate date) throws RoomNotFoundException {
+//        Optional<Room> room = roomRepository.findById(roomId);
+//        if (room.isEmpty()){
+//            throw new RoomNotFoundException();
+//        }
+//    }
+
+    public List<Room> getActiveRoomList() throws RoomNotFoundException {
+        List<Room> roomList = roomRepository.findAllByIsActive(true);
+        return roomList.stream()
+                .filter(r ->
+                        r.getRoomClass().isActive()
+                ).toList();
+
     }
+
+
 }
