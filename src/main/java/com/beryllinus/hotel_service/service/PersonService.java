@@ -1,16 +1,18 @@
 package com.beryllinus.hotel_service.service;
 
 import com.beryllinus.hotel_service.dto.UserIdentification;
-import com.beryllinus.hotel_service.dto.UserSearch;
 import com.beryllinus.hotel_service.dto.response.PersonResponse;
 import com.beryllinus.hotel_service.enumuration.IdentificationType;
 import com.beryllinus.hotel_service.exceptions.PersonNotFoundException;
 import com.beryllinus.hotel_service.mapper.PersonMapper;
 import com.beryllinus.hotel_service.model.Person;
 import com.beryllinus.hotel_service.repository.PersonRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,13 +40,21 @@ public class PersonService {
                 .orElseThrow(PersonNotFoundException::new);
     }
 
-    public PersonResponse searchPerson(UserSearch userSearch) {
-        return null;
-    }
+    //TODO
+    //    public PersonResponse searchPerson(UserSearch userSearch) {
+    //        return null;
+    //    }
 
+    public Page<PersonResponse> getPeople(int page, int size, String sortBy, String direction) {
 
-    public List<PersonResponse> getPeople(int page, int size, String sortBy, String direction) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
 
-        return null;
+        Pageable pageable =
+                PageRequest.of(page, size, sort);
+
+        return personRepository.findAll(pageable)
+                .map(personMapper::toPersonResponse);
     }
 }

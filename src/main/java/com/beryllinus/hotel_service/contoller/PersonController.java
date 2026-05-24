@@ -1,15 +1,12 @@
 package com.beryllinus.hotel_service.contoller;
 
 import com.beryllinus.hotel_service.dto.UserIdentification;
-import com.beryllinus.hotel_service.dto.UserSearch;
 import com.beryllinus.hotel_service.dto.response.PersonResponse;
-import com.beryllinus.hotel_service.repository.RoomConfigRepository;
 import com.beryllinus.hotel_service.service.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -39,7 +36,7 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PersonResponse>> getPeople(
+    public ResponseEntity<Page<PersonResponse>> getPeople(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "updatedAt") String sortBy,
@@ -58,12 +55,11 @@ public class PersonController {
         return ResponseEntity.ok(personService.getPeople(page, size, sortBy, direction));
     }
 
-//TODO
-//    @GetMapping
-//    public ResponseEntity<PersonResponse> searchPerson(@RequestBody UserSearch userSearch) {
-//        return ResponseEntity.ok(personService.searchPerson(userSearch));
-//
-//    }
-
+    //TODO
+    //    @GetMapping
+    //    public ResponseEntity<PersonResponse> searchPerson(@RequestBody UserSearch userSearch) {
+    //        return ResponseEntity.ok(personService.searchPerson(userSearch));
+    //
+    //    }
 
 }
