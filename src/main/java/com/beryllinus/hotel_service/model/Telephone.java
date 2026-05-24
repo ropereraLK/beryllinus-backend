@@ -1,7 +1,8 @@
 package com.beryllinus.hotel_service.model;
 
+import jakarta.persistence.Embeddable;
 import lombok.Data;
-
+@Embeddable
 @Data
 public class Telephone {
 
