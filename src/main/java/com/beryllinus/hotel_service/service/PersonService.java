@@ -10,6 +10,7 @@ import com.beryllinus.hotel_service.model.Person;
 import com.beryllinus.hotel_service.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,4 +43,8 @@ public class PersonService {
     }
 
 
+    public List<PersonResponse> getPeople(int page, int size, String sortBy, String direction) {
+
+        return null;
+    }
 }
