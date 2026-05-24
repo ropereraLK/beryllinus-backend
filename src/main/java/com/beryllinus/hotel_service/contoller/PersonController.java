@@ -2,6 +2,7 @@ package com.beryllinus.hotel_service.contoller;
 
 import com.beryllinus.hotel_service.dto.UserIdentification;
 import com.beryllinus.hotel_service.dto.UserSearch;
+import com.beryllinus.hotel_service.dto.response.PersonResponse;
 import com.beryllinus.hotel_service.repository.RoomConfigRepository;
 import com.beryllinus.hotel_service.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,13 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getPerson(@RequestBody UserIdentification userIdentification) {
+    public ResponseEntity<PersonResponse> getPerson(@RequestBody UserIdentification userIdentification) {
         return ResponseEntity.ok(personService.getPersonByUserIdentification(userIdentification));
 
     }
 
     @GetMapping
-    public ResponseEntity<String> searchPerson(@RequestBody UserSearch userSearch) {
+    public ResponseEntity<PersonResponse> searchPerson(@RequestBody UserSearch userSearch) {
         return ResponseEntity.ok(personService.searchPerson(userSearch));
 
     }
