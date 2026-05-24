@@ -80,23 +80,83 @@ public class OverlapDetectionService {
      */
     public RoomSetting validateConfig(RoomSetting roomSetting) throws RoomNotFoundException {
         //get relevantRoomConfig
-        RoomConfig roomConfig;
-        RoomClassConfig roomClassConfig;
-        try {
-            roomConfig = getRoomConfigValidation(roomSetting.getRoomId(), roomSetting.getDate());
-        } catch (RoomConfigNotFoundException e) {
-            //No Room Config Found, Use Room Base Data
-            //TODO: Log this
-        }
+        RoomConfig roomConfig = null;
+        RoomClassConfig roomClassConfig = null;
 
         try {
             roomClassConfig = getRoomClassConfigValidation(roomSetting.getRoomClassId(), roomSetting.getDate());
+
         } catch (RoomClassConfigNotFoundException e) {
             //No Room Config Found, Use Room Base Data
             //TODO: Log this
         }
 
-        return null;
+        try {
+            roomConfig = getRoomConfigValidation(roomSetting.getRoomId(), roomSetting.getDate());
+
+        } catch (RoomConfigNotFoundException e) {
+            //No Room Config Found, Use Room Base Data
+            //TODO: Log this
+        }
+        if (roomClassConfig == null && roomConfig == null) {
+            roomSetting.setCalculatedIsActive(roomSetting.isBaseIsActive());
+
+            roomSetting.setCalIsLocalBookingActive(roomSetting.isBaseIsLocalBookingActive());
+            roomSetting.setCalcPriceLocal(roomSetting.getBasePriceLocal());
+            roomSetting.setCalcPriceLocalCurrency(roomSetting.getBasePriceLocalCurrency());
+
+            roomSetting.setCalcIsInternationalBookingActive(roomSetting.isBaseIsInternationalBookingActive());
+            roomSetting.setCalcPriceInternational(roomSetting.getBasePriceInternational());
+            roomSetting.setCalcPriceInternationalCurrency(roomSetting.getBasePriceInternationalCurrency());
+
+        } else if (roomConfig != null && roomClassConfig == null) {
+
+            roomSetting.setCalculatedIsActive(roomConfig.isActive() && roomSetting.isBaseIsActive());
+
+            roomSetting.setCalIsLocalBookingActive(roomConfig.isLocalBookingActive()
+                    && roomSetting.isBaseIsLocalBookingActive());
+            roomSetting.setCalcPriceLocal(roomSetting.getBasePriceLocal());
+            roomSetting.setCalcPriceLocalCurrency(roomSetting.getBasePriceLocalCurrency());
+
+            roomSetting.setCalcIsInternationalBookingActive(roomConfig.isInternationalBookingActive()
+                    && roomSetting.isBaseIsInternationalBookingActive());
+            roomSetting.setCalcPriceInternational(roomSetting.getBasePriceInternational());
+            roomSetting.setCalcPriceInternationalCurrency(roomSetting.getBasePriceInternationalCurrency());
+
+        } else if (roomConfig == null) {
+            roomSetting.setCalculatedIsActive(roomClassConfig.isActive()
+                    && roomSetting.isBaseIsActive());
+
+            roomSetting.setCalIsLocalBookingActive(roomClassConfig.isLocalBookingActive()
+                    && roomSetting.isBaseIsLocalBookingActive());
+            roomSetting.setCalcPriceLocal(roomClassConfig.getPriceLocal());
+            roomSetting.setCalcPriceLocalCurrency(roomClassConfig.getPriceLocalCurrency());
+
+            roomSetting.setCalcIsInternationalBookingActive(roomClassConfig.isInternationalBookingActive()
+                    && roomSetting.isBaseIsInternationalBookingActive());
+            roomSetting.setCalcPriceInternational(roomClassConfig.getPriceInternational());
+            roomSetting.setCalcPriceInternationalCurrency(roomClassConfig.getPriceInternationalCurrency());
+
+        } else {
+            roomSetting.setCalculatedIsActive(roomConfig.isActive()
+                    && roomClassConfig.isActive()
+                    && roomSetting.isBaseIsActive());
+
+            roomSetting.setCalIsLocalBookingActive(roomClassConfig.isLocalBookingActive()
+                    && roomConfig.isLocalBookingActive()
+                    && roomSetting.isBaseIsLocalBookingActive());
+            roomSetting.setCalcPriceLocal(roomClassConfig.getPriceLocal());
+            roomSetting.setCalcPriceLocalCurrency(roomClassConfig.getPriceLocalCurrency());
+
+            roomSetting.setCalcIsInternationalBookingActive(roomClassConfig.isInternationalBookingActive()
+                    && roomConfig.isInternationalBookingActive()
+                    && roomSetting.isBaseIsInternationalBookingActive());
+            roomSetting.setCalcPriceInternational(roomClassConfig.getPriceInternational());
+            roomSetting.setCalcPriceInternationalCurrency(roomClassConfig.getPriceInternationalCurrency());
+        }
+
+
+        return roomSetting;
     }
 
     /**
