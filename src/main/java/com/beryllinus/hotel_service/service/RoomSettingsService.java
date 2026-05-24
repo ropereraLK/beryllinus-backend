@@ -5,7 +5,6 @@ import com.beryllinus.hotel_service.exceptions.RoomConfigNotFoundException;
 import com.beryllinus.hotel_service.exceptions.RoomNotFoundException;
 import com.beryllinus.hotel_service.model.room.*;
 import com.beryllinus.hotel_service.repository.RoomClassConfigRepository;
-import com.beryllinus.hotel_service.repository.RoomClassRepository;
 import com.beryllinus.hotel_service.repository.RoomConfigRepository;
 import com.beryllinus.hotel_service.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +14,18 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class OverlapDetectionService {
+public class RoomSettingsService {
+
+    private final RoomRepository roomRepository;
+    private final RoomClassConfigRepository roomClassConfigRepository;
     private final RoomConfigRepository roomConfigRepository;
 
-    @Autowired
-    private RoomRepository roomRepository;
+    public RoomSettingsService(RoomRepository roomRepository,
+                               RoomClassConfigRepository roomClassConfigRepository,
+                               RoomConfigRepository roomConfigRepository) {
 
-    @Autowired
-    private RoomClassRepository roomClassRepository;
-
-    @Autowired
-    private RoomClassConfigRepository roomClassConfigRepository;
-
-    public OverlapDetectionService(RoomConfigRepository roomConfigRepository) {
+        this.roomRepository = roomRepository;
+        this.roomClassConfigRepository = roomClassConfigRepository;
         this.roomConfigRepository = roomConfigRepository;
     }
 
@@ -78,7 +76,7 @@ public class OverlapDetectionService {
     /**
      * @param roomSetting: roomSetting
      */
-    public RoomSetting validateConfig(RoomSetting roomSetting) throws RoomNotFoundException {
+    public RoomSetting validateRoomSettings(RoomSetting roomSetting) throws RoomNotFoundException {
         //get relevantRoomConfig
         RoomConfig roomConfig = null;
         RoomClassConfig roomClassConfig = null;

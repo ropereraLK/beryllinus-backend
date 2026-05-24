@@ -1,9 +1,6 @@
 package com.beryllinus.hotel_service.model.room;
 
 import com.beryllinus.hotel_service.enumuration.Currency;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.math.BigDecimal;

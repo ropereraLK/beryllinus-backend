@@ -1,7 +1,6 @@
 package com.beryllinus.hotel_service.model.room;
 
 import com.beryllinus.hotel_service.enumuration.Currency;
-import com.beryllinus.hotel_service.enumuration.RoomClassType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @AllArgsConstructor
