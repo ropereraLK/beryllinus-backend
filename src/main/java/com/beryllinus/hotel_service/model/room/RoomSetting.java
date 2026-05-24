@@ -58,9 +58,4 @@ public class RoomSetting {
 
     }
 
-//    static class RoomSettingBuilder(){
-//
-//    }
-//
-
 }
