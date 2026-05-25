@@ -4,6 +4,6 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record Passport(
-        String country,
+        String passportCountry,
         String identificationNumber
 ) {}

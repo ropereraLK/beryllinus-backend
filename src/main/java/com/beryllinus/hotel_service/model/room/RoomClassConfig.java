@@ -28,8 +28,8 @@ public class RoomClassConfig {
     private RoomClass roomClass;
 
     private boolean isActive;
-    private LocalDate activeStartDate;
-    private LocalDate activeEndDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     @Column(precision = 10, scale = 2)
     private BigDecimal priceLocal;
     @Enumerated(EnumType.STRING)

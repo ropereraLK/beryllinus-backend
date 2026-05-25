@@ -21,7 +21,7 @@ public class PersonMapper {
         if (person.getPassport() != null) {
 
             response.setPassportCountry(
-                    person.getPassport().country()
+                    person.getPassport().passportCountry()
             );
 
             response.setPassportIdentificationNumber(
@@ -121,7 +121,7 @@ public class PersonMapper {
         dto.setEmail(person.getEmail());
 
         if (person.getPassport() != null) {
-            dto.setPassportCountry(person.getPassport().country());
+            dto.setPassportCountry(person.getPassport().passportCountry());
             dto.setPassportIdentificationNumber(
                     person.getPassport().identificationNumber()
             );
