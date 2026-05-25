@@ -1,6 +1,5 @@
-package com.beryllinus.hotel_service.controller;
+package com.beryllinus.hotel_service.contoller;
 
-import com.beryllinus.hotel_service.contoller.PersonController;
 import com.beryllinus.hotel_service.dto.response.PersonResponse;
 import com.beryllinus.hotel_service.service.PersonService;
 import org.junit.jupiter.api.Test;
