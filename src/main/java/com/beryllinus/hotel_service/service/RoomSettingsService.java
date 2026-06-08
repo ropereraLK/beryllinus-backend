@@ -1,20 +1,13 @@
 package com.beryllinus.hotel_service.service;
 
-import com.beryllinus.hotel_service.enumuration.Currency;
 import com.beryllinus.hotel_service.exceptions.RoomClassConfigNotFoundException;
-import com.beryllinus.hotel_service.exceptions.RoomConfigNotFoundException;
 import com.beryllinus.hotel_service.exceptions.RoomNotFoundException;
 import com.beryllinus.hotel_service.model.room.*;
 import com.beryllinus.hotel_service.repository.RoomClassConfigRepository;
-import com.beryllinus.hotel_service.repository.RoomConfigRepository;
+import com.beryllinus.hotel_service.repository.RoomClassRepository;
 import com.beryllinus.hotel_service.repository.RoomRepository;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -23,22 +16,42 @@ public class RoomSettingsService {
 
     private final RoomRepository roomRepository;
     private final RoomClassConfigRepository roomClassConfigRepository;
+    private final RoomClassRepository roomClassRepository;
+
     private final RoomService roomService;
 
     public RoomSettingsService(RoomRepository roomRepository,
                                RoomClassConfigRepository roomClassConfigRepository,
-                               RoomService roomService) {
+                               RoomService roomService,
+                               RoomClassRepository roomClassRepository
+    ) {
 
         this.roomRepository = roomRepository;
         this.roomClassConfigRepository = roomClassConfigRepository;
         this.roomService = roomService;
+        this.roomClassRepository = roomClassRepository;
+    }
+
+    /**
+     * @param date: date
+     */
+    public List<RoomSetting> getRoomSettingList(final LocalDate date) throws RoomNotFoundException {
+        //Get All Room Classes
+        List<RoomClass> roomClassList = roomClassRepository.findAllByIsActive(true);
+
+        List<RoomSetting> roomSettingList = new ArrayList<>();
+        roomClassList.forEach(
+                roomClass ->
+                        roomSettingList.add(getRoomSettings(roomClass, date))
+        );
+        return roomSettingList;
     }
 
     /**
      * @param roomClass: roomClass
      *                   By the repository layer only active roomClasses are fetched
      */
-    public RoomSetting validateRoomSettings(RoomClass roomClass, LocalDate date) throws RoomNotFoundException {
+    public RoomSetting getRoomSettings(RoomClass roomClass, LocalDate date) throws RoomNotFoundException {
         //Create the new RoomSetting
         RoomSetting roomSetting = new RoomSetting(roomClass.getId());
 
@@ -53,10 +66,13 @@ public class RoomSettingsService {
             //TODO: Log this
         }
 
-        roomService.getAllActiveRooms();
+        //Calculate the number of available rooms for that date
+        calculateRoomAvailability(roomSetting);
 
         return roomSetting;
     }
+
+
 
     private void validateRoomSettingWithRoomClass(RoomSetting roomSetting, RoomClass roomClass) {
         roomSetting.setRoomClassId(roomClass.getId());
@@ -122,8 +138,8 @@ public class RoomSettingsService {
 
     }
 
-
-
+    private void calculateRoomAvailability(RoomSetting roomSetting) {
+    }
 
 
 //
@@ -150,39 +166,6 @@ public class RoomSettingsService {
 //    }
 
 
-    /**
-     * @param date: date
-     */
-    public List<RoomSetting> getRoomSettingList(final LocalDate date) throws RoomNotFoundException {
-        List<Room> roomList = roomRepository.findAllByIsActive(true);
-        return roomList.stream()
-                .filter(r ->
-                        r.getRoomClass().isActive()
-                )
-                .map(r -> {
-                            boolean localBookingActive =
-                                    r.getRoomClass().isLocalBookingActive()
-                                            && r.isLocalBookingActive();
 
-                            boolean internationalBookingActive =
-                                    r.getRoomClass().isInternationalBookingActive()
-                                            && r.isInternationalBookingActive();
 
-                            return new RoomSetting(
-
-                                    r.getRoomClass().getId(),
-                                    date,
-                                    localBookingActive,
-                                    internationalBookingActive,
-                                    r.getRoomClass().getPriceLocal(),
-                                    r.getRoomClass().getPriceLocalCurrency(),
-                                    r.getRoomClass().getPriceInternational(),
-                                    r.getRoomClass().getPriceInternationalCurrency()
-                            );
-                        }
-
-                )
-                .toList();
-
-    }
 }

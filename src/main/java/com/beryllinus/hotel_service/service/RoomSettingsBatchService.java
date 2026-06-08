@@ -35,10 +35,8 @@ public class RoomSettingsBatchService {
         }
     }
 
-    private List<RoomSetting> getRoomSettingList(final LocalDate date){
-       return roomSettingsService.getRoomSettingList(date)
-                .stream()
-                .map(roomSettingsService::validateRoomSettings)
-                .toList();
+    private  List<RoomSetting> getRoomSettingList(final LocalDate date){
+       return roomSettingsService.getRoomSettingList(date);
+
     }
 }
