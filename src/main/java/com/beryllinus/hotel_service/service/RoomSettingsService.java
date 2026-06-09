@@ -14,19 +14,16 @@ import java.util.*;
 @Service
 public class RoomSettingsService {
 
-    private final RoomRepository roomRepository;
     private final RoomClassConfigRepository roomClassConfigRepository;
     private final RoomClassRepository roomClassRepository;
-
     private final RoomService roomService;
 
-    public RoomSettingsService(RoomRepository roomRepository,
-                               RoomClassConfigRepository roomClassConfigRepository,
-                               RoomService roomService,
-                               RoomClassRepository roomClassRepository
+    public RoomSettingsService(
+            RoomClassConfigRepository roomClassConfigRepository,
+            RoomService roomService,
+            RoomClassRepository roomClassRepository
     ) {
 
-        this.roomRepository = roomRepository;
         this.roomClassConfigRepository = roomClassConfigRepository;
         this.roomService = roomService;
         this.roomClassRepository = roomClassRepository;
@@ -67,11 +64,10 @@ public class RoomSettingsService {
         }
 
         //Calculate the number of available rooms for that date
-        calculateRoomAvailability(roomSetting);
+        roomSetting.setAvailableRooms(calculateRoomAvailability(roomClass, date));
 
         return roomSetting;
     }
-
 
 
     private void validateRoomSettingWithRoomClass(RoomSetting roomSetting, RoomClass roomClass) {
@@ -138,34 +134,21 @@ public class RoomSettingsService {
 
     }
 
-    private void calculateRoomAvailability(RoomSetting roomSetting) {
+    private int calculateRoomAvailability(RoomClass roomClass, LocalDate date) {
+
+        int availableRooms = 0;
+
+        for (Room room : roomService.getAllActiveRoomsByRoomClass(roomClass)) {
+            Optional<RoomConfig> configOpt =
+                    roomService.getRoomConfigByDate(room, date);
+
+            if (configOpt.isEmpty() || configOpt.get().isActive()) {
+                availableRooms++;
+            }
+        }
+
+        return availableRooms;
     }
-
-
-//
-//    /**
-//     * @param roomClassId: 401
-//     * @param date:        2015-01-28
-//     */
-//    private RoomClassConfig getRoomClassConfigValidation(final int roomClassId, final LocalDate date) throws RoomClassConfigNotFoundException {
-//        Optional<List<RoomClassConfig>> roomClassConfigList = roomClassConfigRepository.findRoomsClassConfigByIdAndDateAndIsActive(roomClassId, date);
-//        if (roomClassConfigList.isEmpty()) {
-//            throw new RoomClassConfigNotFoundException();
-//        } else {
-//            Optional<RoomConfig> roomConfig;
-//            if (roomClassConfigList.get().size() > 1) {
-//                //TODO: Corrections needed trigger
-//
-//                return roomClassConfigList.get().stream()
-//                        .max(Comparator.comparing(RoomClassConfig::getUpdatedAt))
-//                        .orElseThrow(RoomClassConfigNotFoundException::new);
-//            } else {
-//                return roomClassConfigList.get().getFirst();
-//            }
-//        }
-//    }
-
-
 
 
 }

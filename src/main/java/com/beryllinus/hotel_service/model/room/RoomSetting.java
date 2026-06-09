@@ -38,6 +38,15 @@ public class RoomSetting {
     private BigDecimal basePriceInternational;
     private Currency basePriceInternationalCurrency;
 
+    /**
+     * This is a calculated field based on total number of Rooms available
+     * in the Room Class
+     * Eg: If 10 Rooms available for RoomClass 'STANDARD'
+     * This field is 10 and this will never be changed
+     * Always try to refer roomClassConfig availableRooms value
+     */
+    private int availableRooms;
+
     public RoomSetting(//int roomId,
                        int roomClassId,
                        LocalDate date,

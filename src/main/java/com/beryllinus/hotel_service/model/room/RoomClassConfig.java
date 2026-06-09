@@ -43,15 +43,6 @@ public class RoomClassConfig {
     private Currency priceInternationalCurrency;
     private boolean isInternationalBookingActive;
 
-    /**
-     * This is a calculated field based on total number of Rooms available
-     * in the Room Config
-     * Eg: If 10 Rooms available for RoomClass 'STANDARD'
-     * This field is 10 and this will never be changed
-     * Always try to refer roomClassConfig availableRooms value
-     */
-    private int availableRooms;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 

@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
@@ -40,17 +41,24 @@ public class RoomClass {
     private Currency priceInternationalCurrency;
     private boolean isInternationalBookingActive;
 
-    /**
-     * This is a calculated field based on total number of Rooms available
-     * in the Room Class
-     * Eg: If 10 Rooms available for RoomClass 'STANDARD'
-     * This field is 10 and this will never be changed
-     * Always try to refer roomClassConfig availableRooms value
-     */
-    private int availableRooms;
+
 
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RoomClass roomClass = (RoomClass) o;
+        return roomClassType == roomClass.roomClassType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomClassType);
+    }
 }

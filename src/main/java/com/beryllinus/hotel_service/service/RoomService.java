@@ -3,6 +3,7 @@ package com.beryllinus.hotel_service.service;
 import com.beryllinus.hotel_service.exceptions.RoomConfigNotFoundException;
 import com.beryllinus.hotel_service.exceptions.RoomNotFoundException;
 import com.beryllinus.hotel_service.model.room.Room;
+import com.beryllinus.hotel_service.model.room.RoomClass;
 import com.beryllinus.hotel_service.model.room.RoomConfig;
 import com.beryllinus.hotel_service.repository.RoomConfigRepository;
 import com.beryllinus.hotel_service.repository.RoomRepository;
@@ -32,6 +33,12 @@ public class RoomService {
         } else {
             return roomList;
         }
+    }
+
+    public List<Room> getAllActiveRoomsByRoomClass(RoomClass roomClass) throws RoomNotFoundException {
+        return getAllActiveRooms().stream()
+                .filter(r -> r.getRoomClass().equals(roomClass))
+                .toList();
     }
 
     public Optional<RoomConfig> getRoomConfigByDate(Room room, LocalDate date) throws RoomConfigNotFoundException {
