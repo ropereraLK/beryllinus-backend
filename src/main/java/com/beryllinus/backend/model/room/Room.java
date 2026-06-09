@@ -12,13 +12,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
-/***
- * @ ROOM
- * id: 1
- * RoomClassType: EXECUTIVE
- * roomNumber: 401
- */
 @Entity
 @Table(name = "room")
 public class Room {
