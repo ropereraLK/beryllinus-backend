@@ -35,10 +35,12 @@ public class RoomSetting {
     private boolean calculatedIsActive;
 
     private BigDecimal calcPriceLocal;
+    @Enumerated(EnumType.STRING)
     private Currency calcPriceLocalCurrency;
     private boolean calIsLocalBookingActive;
 
     private BigDecimal calcPriceInternational;
+    @Enumerated(EnumType.STRING)
     private Currency calcPriceInternationalCurrency;
     private boolean calcIsInternationalBookingActive;
 
