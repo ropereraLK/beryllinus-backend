@@ -7,6 +7,6 @@ public class RoomClassConfigNotFoundException extends RuntimeException {
     }
 
     public RoomClassConfigNotFoundException() {
-         
+
     }
 }

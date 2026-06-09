@@ -1,0 +1,35 @@
+{
+  "request": {
+    "checkIn": "2026-07-01",
+    "checkOut": "2026-07-05",
+    "rooms": 2,
+    "roomClassType": null
+  },
+  "response": {
+    "checkIn": "2026-07-01",
+    "checkOut": "2026-07-05",
+    "nights": 4,
+    "roomClasses": [
+      {
+        "roomClassType": "DELUXE",
+        "availableRooms": 10,
+        "international": {
+          "pricePerNight": 50.00,
+          "currency": "USD"
+        }
+      },
+      {
+        "roomClassType": "SUITE",
+        "availableRooms": 5,
+        "local": {
+          "pricePerNight": 30000.00,
+          "currency": "LKR"
+        },
+        "international": {
+          "pricePerNight": 150.00,
+          "currency": "USD"
+        }
+      }
+    ]
+  }
+}
