@@ -1,6 +1,6 @@
 package com.beryllinus.backend.service;
 
-import com.beryllinus.backend.config.AuthProperties;
+import com.beryllinus.backend.configuration.AuthProperties;
 import com.beryllinus.backend.dto.LoginRequestDTO;
 import com.beryllinus.backend.enumuration.AuthProvider;
 import com.beryllinus.backend.factory.AuthHandlerFactory;

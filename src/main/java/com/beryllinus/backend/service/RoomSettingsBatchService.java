@@ -3,6 +3,7 @@ package com.beryllinus.backend.service;
 import com.beryllinus.backend.model.room.RoomSetting;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -12,15 +13,17 @@ import java.util.List;
 public class RoomSettingsBatchService {
 
     private final RoomSettingsService roomSettingsService;
+    private final Clock clock;
 
-    public RoomSettingsBatchService(RoomSettingsService roomSettingsService) {
+    public RoomSettingsBatchService(RoomSettingsService roomSettingsService, Clock clock) {
         this.roomSettingsService = roomSettingsService;
+        this.clock = clock;
     }
 
     //TODO: Scheduled Function
     public List<RoomSetting> createRoomSettingsAsBatch() {
 
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(clock);
         List<RoomSetting> roomSettings = new ArrayList<>();
 
         // Skip Feb 29

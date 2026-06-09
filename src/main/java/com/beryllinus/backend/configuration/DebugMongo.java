@@ -1,4 +1,4 @@
-package com.beryllinus.backend.config;
+package com.beryllinus.backend.configuration;
 
 import org.springframework.stereotype.Component;
 

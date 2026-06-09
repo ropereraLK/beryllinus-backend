@@ -1,4 +1,4 @@
-package com.beryllinus.backend.config;
+package com.beryllinus.backend.configuration;
 
 //import com.mongodb.ConnectionString;
 //import com.mongodb.MongoClientSettings;
