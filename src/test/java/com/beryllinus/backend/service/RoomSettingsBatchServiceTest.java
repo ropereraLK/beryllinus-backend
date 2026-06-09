@@ -16,15 +16,27 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RoomSettingsBatchServiceTest {
+
     @Mock
     private RoomSettingsService roomSettingsService;
 
     private RoomSettingsBatchService service;
 
-    //    01: Test a normal day
-    //    Today: 2026-06-09 -> Generated For 2027-06-09
     @Test
     void shouldGenerateSettingsForNextYearOnNormalDay() {
+
+        // -----------------------------------------------------
+        // Business Scenario
+        // -----------------------------------------------------
+        // Today's date: 2026-06-09
+        //
+        // Requirement:
+        // Generate RoomSettings exactly one year ahead.
+        //
+        // Expected:
+        // RoomSettings should be generated for:
+        // 2027-06-09
+        // -----------------------------------------------------
 
         Clock fixedClock = Clock.fixed(
                 Instant.parse("2026-06-09T00:00:00Z"),
@@ -47,10 +59,22 @@ class RoomSettingsBatchServiceTest {
                 );
     }
 
-    //   02: Test a 29th February
-    //   Skip setting generation
     @Test
     void shouldSkipOnFeb29() {
+
+        // -----------------------------------------------------
+        // Business Scenario
+        // -----------------------------------------------------
+        // Today's date: 2028-02-29
+        //
+        // Requirement:
+        // Leap day must be ignored because RoomSettings for
+        // this date would already have been generated on
+        // 2027-02-28.
+        //
+        // Expected:
+        // No RoomSettings should be generated.
+        // -----------------------------------------------------
 
         Clock fixedClock = Clock.fixed(
                 Instant.parse("2028-02-29T00:00:00Z"),
@@ -67,10 +91,24 @@ class RoomSettingsBatchServiceTest {
         verifyNoInteractions(roomSettingsService);
     }
 
-    //   03: Test a 28th February & next year a leap year
-    //   Generate for 28th and 29th February
     @Test
     void shouldGenerateFeb28AndFeb29ForNextLeapYear() {
+
+        // -----------------------------------------------------
+        // Business Scenario
+        // -----------------------------------------------------
+        // Today's date: 2027-02-28
+        //
+        // Next year (2028) is a leap year.
+        //
+        // Requirement:
+        // Generate RoomSettings for:
+        // - 2028-02-28
+        // - 2028-02-29
+        //
+        // Expected:
+        // Service should be called twice.
+        // -----------------------------------------------------
 
         Clock fixedClock = Clock.fixed(
                 Instant.parse("2027-02-28T00:00:00Z"),
@@ -101,10 +139,23 @@ class RoomSettingsBatchServiceTest {
                 .generateAndPersistRoomSettingList(any());
     }
 
-    //   03: Test a 28th February & next year non leap year
-    //   Generate for 28th only
     @Test
     void shouldGenerateOnlyFeb28WhenNextYearIsNotLeapYear() {
+
+        // -----------------------------------------------------
+        // Business Scenario
+        // -----------------------------------------------------
+        // Today's date: 2026-02-28
+        //
+        // Next year (2027) is NOT a leap year.
+        //
+        // Requirement:
+        // Generate RoomSettings only for:
+        // - 2027-02-28
+        //
+        // Expected:
+        // Service should be called exactly once.
+        // -----------------------------------------------------
 
         Clock fixedClock = Clock.fixed(
                 Instant.parse("2026-02-28T00:00:00Z"),
