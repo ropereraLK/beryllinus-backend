@@ -1,5 +1,6 @@
 package com.beryllinus.backend.repository;
 
+import com.beryllinus.backend.model.room.RoomClass;
 import com.beryllinus.backend.model.room.RoomClassConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,9 @@ public interface RoomClassConfigRepository extends JpaRepository<RoomClassConfig
     Optional<List<RoomClassConfig>> findRoomsClassConfigByIdAndDateAndIsActive(
             @Param("roomClassId") Integer roomClassId,
             @Param("targetDate") LocalDate targetDate
+    );
+
+    List<RoomClassConfig> findByRoomClass(
+            RoomClass roomClass
     );
 }

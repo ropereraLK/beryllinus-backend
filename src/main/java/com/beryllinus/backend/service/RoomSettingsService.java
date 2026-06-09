@@ -1,5 +1,6 @@
 package com.beryllinus.backend.service;
 
+import com.beryllinus.backend.enumuration.RoomClassType;
 import com.beryllinus.backend.exceptions.RoomClassConfigNotFoundException;
 import com.beryllinus.backend.exceptions.RoomConfigNotFoundException;
 import com.beryllinus.backend.exceptions.RoomNotFoundException;
@@ -253,4 +254,71 @@ public class RoomSettingsService {
 
         return availableRooms;
     }
+    /**
+     * Get all RoomSettings for a specific date.
+     */
+    public List<RoomSetting> getByDate(
+            LocalDate date
+    ) {
+
+        return roomSettingRepository.findByDate(date);
+    }
+
+    /**
+     * Get all RoomSettings within a date range.
+     */
+    public List<RoomSetting> getByDateRange(
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+
+        return roomSettingRepository.findByDateBetween(
+                startDate,
+                endDate
+        );
+    }
+
+    /**
+     * Get RoomSetting for a RoomClass and Date.
+     */
+    public RoomSetting getByRoomClassAndDate(
+            RoomClassType roomClassType,
+            LocalDate date
+    ) {
+
+        RoomClass roomClass =
+                roomClassRepository
+                        .findByRoomClassType(roomClassType)
+                        .orElseThrow(RoomNotFoundException::new);
+
+        return roomSettingRepository
+                .findByRoomClassAndDate(
+                        roomClass,
+                        date
+                )
+                .orElseThrow(RoomNotFoundException::new);
+    }
+
+    /**
+     * Get RoomSettings for a RoomClass within a date range.
+     */
+    public List<RoomSetting> getByRoomClassAndDateRange(
+            RoomClassType roomClassType,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+
+        RoomClass roomClass =
+                roomClassRepository
+                        .findByRoomClassType(roomClassType)
+                        .orElseThrow(RoomNotFoundException::new);
+
+        return roomSettingRepository
+                .findByRoomClassAndDateBetween(
+                        roomClass,
+                        startDate,
+                        endDate
+                );
+    }
+
 }

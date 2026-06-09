@@ -53,4 +53,23 @@ public class RoomService {
         }
     }
 
+    public List<Room> getRoomsByRoomClass(Long roomClassId) {
+
+        return roomRepository.findByRoomClass_IdAndIsActive(
+                roomClassId,
+                true
+        );
+    }
+
+    public Room getRoomById(Integer id) {
+
+        return roomRepository
+                .findByIdAndIsActive(id, true)
+                .orElseThrow(() ->
+                        new RoomNotFoundException(
+                                "Room not found. id=" + id
+                        )
+                );
+    }
+
 }
