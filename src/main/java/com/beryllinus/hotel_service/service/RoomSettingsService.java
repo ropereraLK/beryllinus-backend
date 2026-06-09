@@ -50,7 +50,7 @@ public class RoomSettingsService {
      */
     public RoomSetting getRoomSettings(RoomClass roomClass, LocalDate date) throws RoomNotFoundException {
         //Create the new RoomSetting
-        RoomSetting roomSetting = new RoomSetting(roomClass.getId());
+        RoomSetting roomSetting = new RoomSetting(roomClass);
 
         //Validate RoomSetting with RoomClass
         validateRoomSettingWithRoomClass(roomSetting, roomClass);
@@ -71,7 +71,7 @@ public class RoomSettingsService {
 
 
     private void validateRoomSettingWithRoomClass(RoomSetting roomSetting, RoomClass roomClass) {
-        roomSetting.setRoomClassId(roomClass.getId());
+        roomSetting.setRoomClass(roomClass);
         roomSetting.setBaseIsActive(roomClass.isActive());
 
         roomSetting.setBaseIsLocalBookingActive(roomClass.isLocalBookingActive());

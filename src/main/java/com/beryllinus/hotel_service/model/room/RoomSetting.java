@@ -1,18 +1,31 @@
 package com.beryllinus.hotel_service.model.room;
 
 import com.beryllinus.hotel_service.enumuration.Currency;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
+
 @Entity
+@Data
 public class RoomSetting {
-    //id =  RoomSettingId
+
+    /**
+     * id means the unique key  RoomSettingId
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int roomClassId;
+
+    /**
+     * Per RoomClass, Per Day one Setting file will be generated
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_class_id")
+    private RoomClass roomClass;
+
     private LocalDate date;
     private boolean calculatedIsActive;
 
@@ -24,18 +37,27 @@ public class RoomSetting {
     private Currency calcPriceInternationalCurrency;
     private boolean calcIsInternationalBookingActive;
 
-    //Base Methods reflects values taken from RoomClass
-    //Then if RoomClassConfig has necessary records based on that above fields
-    //are updated
-
+    /**
+     * Base Methods reflects values taken from RoomClass
+     * Then if RoomClassConfig has necessary records based on that above fields
+     * are updated
+     * NOT SAVED IN DB
+     */
+    @Transient
     private boolean baseIsActive;
+    @Transient
     private boolean baseIsLocalBookingActive;
+    @Transient
     private boolean baseIsInternationalBookingActive;
 
+    @Transient
     private BigDecimal basePriceLocal;
+    @Transient
     private Currency basePriceLocalCurrency;
 
+    @Transient
     private BigDecimal basePriceInternational;
+    @Transient
     private Currency basePriceInternationalCurrency;
 
     /**
@@ -47,42 +69,9 @@ public class RoomSetting {
      */
     private int availableRooms;
 
-    public RoomSetting(//int roomId,
-                       int roomClassId,
-                       LocalDate date,
-                       boolean baseIsLocalBookingActive,
-                       boolean baseIsInternationalBookingActive,
-                       BigDecimal basePriceLocal,
-                       Currency basePriceLocalCurrency,
-                       BigDecimal basePriceInternational,
-                       Currency basePriceInternationalCurrency
-
-    ) {
-//        this.roomId = roomId;
-        this.roomClassId = roomClassId;
-        this.date = date;
-        //Only true records are selected
-        this.baseIsActive = true;
-        this.baseIsLocalBookingActive = baseIsLocalBookingActive;
-        this.baseIsInternationalBookingActive = baseIsInternationalBookingActive;
-        this.basePriceLocal = basePriceLocal;
-        this.basePriceLocalCurrency = basePriceLocalCurrency;
-        this.basePriceInternational = basePriceInternational;
-        this.basePriceInternationalCurrency = basePriceInternationalCurrency;
-
-
-    }
-
-    public RoomSetting(
-            int roomClassId
-
-
-    ) {
-
-        this.roomClassId = roomClassId;
+    public RoomSetting(RoomClass roomClass) {
+        this.roomClass = roomClass;
         this.date = LocalDate.now();
-
-
     }
 
 }

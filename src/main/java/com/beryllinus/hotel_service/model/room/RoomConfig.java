@@ -13,15 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-/* **
- * ROOMCONFIG
- * id: 1
- * room_id: 1 //FK
- * startDate: 2025-10-01
- * endDate: 2025-10-01
- * createdAt: 2025-10-01
- * updatedAt 2025-10-01
- */
 @Entity
 @Table(name = "room_config")
 public class RoomConfig {
