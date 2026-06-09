@@ -5,6 +5,7 @@ import com.beryllinus.backend.exceptions.RoomNotFoundException;
 import com.beryllinus.backend.model.room.*;
 import com.beryllinus.backend.repository.RoomClassConfigRepository;
 import com.beryllinus.backend.repository.RoomClassRepository;
+import com.beryllinus.backend.repository.RoomSettingRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,32 +14,36 @@ import java.util.*;
 @Service
 public class RoomSettingsService {
 
+    private final RoomService roomService;
     private final RoomClassConfigRepository roomClassConfigRepository;
     private final RoomClassRepository roomClassRepository;
-    private final RoomService roomService;
+
+    private final RoomSettingRepository roomSettingRepository;
 
     public RoomSettingsService(
             RoomClassConfigRepository roomClassConfigRepository,
             RoomService roomService,
-            RoomClassRepository roomClassRepository
+            RoomClassRepository roomClassRepository,
+            RoomSettingRepository roomSettingRepository
     ) {
 
         this.roomClassConfigRepository = roomClassConfigRepository;
         this.roomService = roomService;
         this.roomClassRepository = roomClassRepository;
+        this.roomSettingRepository = roomSettingRepository;
     }
 
     /**
      * @param date: date
      */
-    public List<RoomSetting> getRoomSettingList(final LocalDate date) throws RoomNotFoundException {
+    public List<RoomSetting> generateRoomSettingList(final LocalDate date) throws RoomNotFoundException {
         //Get All Room Classes
         List<RoomClass> roomClassList = roomClassRepository.findAllByIsActive(true);
 
         List<RoomSetting> roomSettingList = new ArrayList<>();
         roomClassList.forEach(
                 roomClass ->
-                        roomSettingList.add(getRoomSettings(roomClass, date))
+                        roomSettingList.add(generateRoomSettings(roomClass, date))
         );
         return roomSettingList;
     }
@@ -47,7 +52,7 @@ public class RoomSettingsService {
      * @param roomClass: roomClass
      *                   By the repository layer only active roomClasses are fetched
      */
-    public RoomSetting getRoomSettings(RoomClass roomClass, LocalDate date) throws RoomNotFoundException {
+    public RoomSetting generateRoomSettings(RoomClass roomClass, LocalDate date) throws RoomNotFoundException {
         //Create the new RoomSetting
         RoomSetting roomSetting = new RoomSetting(roomClass);
 
@@ -68,6 +73,26 @@ public class RoomSettingsService {
         return roomSetting;
     }
 
+    /**
+     * @param date: date
+     */
+    public List<RoomSetting> generateAndPersistRoomSettingList(final LocalDate date) throws RoomNotFoundException {
+        //Get All Room Classes
+        List<RoomClass> roomClassList = roomClassRepository.findAllByIsActive(true);
+
+        List<RoomSetting> roomSettingList = new ArrayList<>();
+        roomClassList.forEach(
+                roomClass ->
+                        roomSettingList.add(generateRoomSettings(roomClass, date))
+        );
+        roomSettingRepository.saveAll(roomSettingList);
+        return roomSettingList;
+    }
+
+//    Commented and can be used later
+//    public RoomSetting persistRoomSetting(RoomSetting roomSetting) {
+//        return roomSettingRepository.save(roomSetting);
+//    }
 
     private void validateRoomSettingWithRoomClass(RoomSetting roomSetting, RoomClass roomClass) {
         roomSetting.setRoomClass(roomClass);
@@ -81,7 +106,6 @@ public class RoomSettingsService {
         roomSetting.setBaseIsInternationalBookingActive(roomClass.isInternationalBookingActive());
         roomSetting.setBasePriceInternationalCurrency(roomClass.getPriceInternationalCurrency());
         roomSetting.setBasePriceInternational(roomClass.getPriceInternational());
-
 
     }
 

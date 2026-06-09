@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,26 +18,41 @@ public class RoomSettingsBatchService {
     }
 
     //TODO: Scheduled Function
-    public void createRoomSettingsAsBatch() {
+    public List<RoomSetting> createRoomSettingsAsBatch() {
+
         LocalDate today = LocalDate.now();
-        LocalDate createdDate = today.plusYears(1);
-        if (today.getMonth() != Month.FEBRUARY && today.getDayOfMonth() != 29) {
+        List<RoomSetting> roomSettings = new ArrayList<>();
 
-            //TODO: Save to DB
-            getRoomSettingList(createdDate);
-
-
-            if (today.getMonth() == Month.FEBRUARY && today.getDayOfMonth() == 28 && createdDate.isLeapYear()) {
-                //TODO: Save to DB
-                createdDate = createdDate.plusDays(1);
-                getRoomSettingList(createdDate);
-            }
-
+        // Skip Feb 29
+        if (today.getMonth() == Month.FEBRUARY
+                && today.getDayOfMonth() == 29) {
+            return roomSettings;
         }
+
+        LocalDate targetDate = today.plusYears(1);
+
+        roomSettings.addAll(
+                roomSettingsService.generateAndPersistRoomSettingList(targetDate)
+        );
+
+        // Feb 28 before a leap year: also generate Feb 29
+        if (today.getMonth() == Month.FEBRUARY
+                && today.getDayOfMonth() == 28
+                && targetDate.isLeapYear()) {
+
+            roomSettings.addAll(
+                    roomSettingsService.generateAndPersistRoomSettingList(
+                            targetDate.plusDays(1)
+                    )
+            );
+        }
+
+        return roomSettings;
     }
 
-    private  List<RoomSetting> getRoomSettingList(final LocalDate date){
-       return roomSettingsService.getRoomSettingList(date);
+
+    private List<RoomSetting> generateAndPersistRoomSettingList(final LocalDate date) {
+        return roomSettingsService.generateAndPersistRoomSettingList(date);
 
     }
 }
