@@ -64,7 +64,7 @@ public class BookingService {
                         );
 
                 if (!roomSetting.isCalculatedIsActive()
-                        || roomSetting.getAvailableRooms() <= 0) {
+                        || roomSetting.getAvailableRooms() < bookingPrecheckRequest.getRooms()) {
 
                     available = false;
                     break;
