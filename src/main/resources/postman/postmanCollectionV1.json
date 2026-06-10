@@ -81,6 +81,38 @@
           ]
         }
       }
+    },
+    {
+      "name": "Create Temporary Booking",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomClassType\": \"DELUXE\",\n  \"checkIn\": \"{{checkIn}}\",\n  \"checkOut\": \"{{checkOut}}\",\n  \"roomsBooked\": 2,\n  \"internationalBooking\": false,\n  \"specialRequests\": \"High floor room with sea view\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bookings/temporary",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bookings",
+            "temporary"
+          ]
+        }
+      }
     }
   ]
 }

@@ -6,24 +6,19 @@ import com.beryllinus.backend.exceptions.RoomClassNotFoundException;
 import com.beryllinus.backend.model.room.RoomClass;
 import com.beryllinus.backend.enumuration.RoomClassType;
 import com.beryllinus.backend.repository.RoomClassRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-
+@AllArgsConstructor
 @Service
 public class RoomClassService {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomClassService.class);
     private final RoomClassRepository roomClassRepository;
-
-    public RoomClassService(
-            RoomClassRepository roomClassRepository
-    ) {
-        this.roomClassRepository = roomClassRepository;
-    }
 
     /**
      * Get all active RoomClasses.

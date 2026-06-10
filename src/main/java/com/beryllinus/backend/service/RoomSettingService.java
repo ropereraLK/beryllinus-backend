@@ -9,6 +9,8 @@ import com.beryllinus.backend.repository.RoomClassConfigRepository;
 import com.beryllinus.backend.repository.RoomClassRepository;
 import com.beryllinus.backend.repository.RoomSettingRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -257,6 +259,7 @@ public class RoomSettingService {
 
         return availableRooms;
     }
+
     /**
      * Get all RoomSettings for a specific date.
      */
@@ -328,4 +331,14 @@ public class RoomSettingService {
                 );
     }
 
+    public List<RoomSetting> findForBookingWithLock(
+            int roomClassId,
+            LocalDate checkIn,
+            LocalDate checkOut) {
+
+        return roomSettingRepository.findForBookingWithLock(
+                roomClassId,
+                checkIn,
+                checkOut);
+    }
 }

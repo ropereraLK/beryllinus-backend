@@ -2,7 +2,9 @@ package com.beryllinus.backend.mapper;
 
 import com.beryllinus.backend.configuration.BookingConfiguration;
 import com.beryllinus.backend.dto.request.BookingPrecheckRequest;
+import com.beryllinus.backend.dto.response.BookingResponse;
 import com.beryllinus.backend.exceptions.RequestValidationException;
+import com.beryllinus.backend.model.Booking;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -102,5 +104,23 @@ public class BookingMapper {
         bookingPrecheckRequest.setRooms(rooms);
 
         return bookingPrecheckRequest;
+    }
+
+    public BookingResponse toResponse(Booking booking) {
+
+        return new BookingResponse(
+                booking.getId(),
+                booking.getRoomClass().getRoomClassType(),
+                booking.getCheckIn(),
+                booking.getCheckOut(),
+                booking.getRoomsBooked(),
+                booking.getStatus(),
+                booking.isInternationalBooking(),
+                booking.getPricePerNight(),
+                booking.getTotalAmount(),
+                booking.getCurrency(),
+                booking.getSpecialRequests(),
+                booking.getExpiresAt()
+        );
     }
 }

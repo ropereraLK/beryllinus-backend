@@ -1,0 +1,24 @@
+{
+  "request": {
+    "roomClassType": "DELUXE",
+    "checkIn": "2026-07-01",
+    "checkOut": "2026-07-05",
+    "roomsBooked": 2,
+    "internationalBooking": false,
+    "specialRequests": "High floor room with sea view"
+  },
+  "response": {
+    "bookingId": "550e8400-e29b-41d4-a716-446655440000",
+    "roomClassType": "DELUXE",
+    "checkIn": "2026-07-01",
+    "checkOut": "2026-07-05",
+    "roomsBooked": 2,
+    "status": "TEMPORARY",
+    "internationalBooking": false,
+    "pricePerNight": 15000.00,
+    "totalAmount": 120000.00,
+    "currency": "LKR",
+    "specialRequests": "High floor room with sea view",
+    "expiresAt": "2026-06-10T18:15:00+05:30"
+  }
+}
