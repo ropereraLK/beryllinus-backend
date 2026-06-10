@@ -38,6 +38,16 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,caches
+
+  metrics:
+    enable:
+      cache: true
+
 booking:
   maxSearchDaysAhead: 364
   maxStayLength: 30
