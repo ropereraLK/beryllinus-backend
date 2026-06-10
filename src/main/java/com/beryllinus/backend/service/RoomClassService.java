@@ -5,13 +5,17 @@ import com.beryllinus.backend.exceptions.RoomClassNotFoundException;
 import com.beryllinus.backend.model.room.RoomClass;
 import com.beryllinus.backend.enumuration.RoomClassType;
 import com.beryllinus.backend.repository.RoomClassRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 @Service
 public class RoomClassService {
 
+    private static final Logger LOGGER = LogManager.getLogger(RoomClassService.class);
     private final RoomClassRepository roomClassRepository;
 
     public RoomClassService(
@@ -23,8 +27,9 @@ public class RoomClassService {
     /**
      * Get all active RoomClasses.
      */
+    @Cacheable("roomClasses")
     public List<RoomClass> getAllActiveRoomClasses() {
-
+        LOGGER.info("Fetching data from database");
         return roomClassRepository.findAllByIsActive(true);
     }
 
@@ -35,8 +40,10 @@ public class RoomClassService {
             Integer id
     ) {
 
-        return roomClassRepository
-                .findByIdAndIsActive(id, true)
+        return getAllActiveRoomClasses()
+                .stream()
+                .filter(r -> r.getId() == id)
+                .findFirst()
                 .orElseThrow(
                         () -> new RoomClassNotFoundException(
                                 "RoomClass not found. id=" + id
@@ -50,13 +57,15 @@ public class RoomClassService {
     public RoomClass getRoomClassByType(
             RoomClassType roomClassType
     ) {
-
-        return roomClassRepository
-                .findByRoomClassType(roomClassType)
-                .orElseThrow(
-                        () -> new RoomClassNotFoundException(
-                                "RoomClass not found. type=" + roomClassType
-                        )
-                );
+        return
+                getAllActiveRoomClasses()
+                        .stream()
+                        .filter(r -> r.getRoomClassType().equals(roomClassType))
+                        .findFirst()
+                        .orElseThrow(
+                                () -> new RoomClassNotFoundException(
+                                        "RoomClass not found. type=" + roomClassType
+                                )
+                        );
     }
 }

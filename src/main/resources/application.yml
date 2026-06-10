@@ -5,6 +5,9 @@ logging:
   level:
     org.flywaydb: DEBUG
     org.springframework.boot.autoconfigure.flyway: DEBUG
+    root: INFO
+    org.springframework.cache: TRACE
+    com.beryllinus.backend: DEBUG
 
 spring:
   datasource:
@@ -21,6 +24,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  cache:
+    type: redis
+  data: #For development only
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
 
   flyway:
     enabled: true
