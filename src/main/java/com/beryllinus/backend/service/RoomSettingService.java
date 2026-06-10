@@ -9,10 +9,13 @@ import com.beryllinus.backend.repository.RoomClassConfigRepository;
 import com.beryllinus.backend.repository.RoomClassRepository;
 import com.beryllinus.backend.repository.RoomSettingRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+
+import static com.beryllinus.backend.constants.CacheConstants.ROOM_SETTINGS;
 
 @Service
 public class RoomSettingService {
@@ -281,6 +284,10 @@ public class RoomSettingService {
     /**
      * Get RoomSetting for a RoomClass and Date.
      */
+    @Cacheable(
+            value = ROOM_SETTINGS,
+            key = "{#roomClassType,#date}"
+    )
     public RoomSetting getByRoomClassAndDate(
             RoomClassType roomClassType,
             LocalDate date

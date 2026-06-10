@@ -6,4 +6,5 @@ public final class CacheConstants {
     }
 
     public static final String ROOM_CLASSES = "roomClasses";
+    public static final String ROOM_SETTINGS = "roomSettings";
 }
