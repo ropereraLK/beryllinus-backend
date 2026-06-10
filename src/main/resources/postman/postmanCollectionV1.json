@@ -1,0 +1,86 @@
+{
+  "info": {
+    "name": "Beryllinus Booking API",
+    "_postman_id": "beryllinus-booking-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "checkIn",
+      "value": "2026-07-01"
+    },
+    {
+      "key": "checkOut",
+      "value": "2026-07-05"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const today = new Date();",
+          "const checkIn = new Date(today);",
+          "checkIn.setDate(today.getDate()+30);",
+          "const checkOut = new Date(checkIn);",
+          "checkOut.setDate(checkIn.getDate()+4);",
+          "pm.collectionVariables.set('checkIn', checkIn.toISOString().split('T')[0]);",
+          "pm.collectionVariables.set('checkOut', checkOut.toISOString().split('T')[0]);"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Precheck Booking",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function(){ pm.response.to.have.status(200);});",
+              "const jsonData = pm.response.json();",
+              "pm.test('Room classes returned', function(){ pm.expect(jsonData.roomClasses).to.be.an('array');});",
+              "if(jsonData.roomClasses && jsonData.roomClasses.length > 0){ pm.collectionVariables.set('availableRoomClass', jsonData.roomClasses[0].roomClassType);}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"checkIn\": \"{{checkIn}}\",\n  \"checkOut\": \"{{checkOut}}\",\n  \"rooms\": 2,\n  \"roomClassType\": null\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bookings/precheck",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bookings",
+            "precheck"
+          ]
+        }
+      }
+    }
+  ]
+}

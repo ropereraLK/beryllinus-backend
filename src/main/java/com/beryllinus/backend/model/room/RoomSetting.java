@@ -2,21 +2,28 @@ package com.beryllinus.backend.model.room;
 
 import com.beryllinus.backend.enumuration.Currency;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"room_class_id", "date"})
         }
 )
-public class RoomSetting {
+public class RoomSetting implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     /**
      * id means the unique key  RoomSettingId
      */

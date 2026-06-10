@@ -1,3 +1,6 @@
+-- REVIEW REQUIRED: Add created_at and updated_at columns with CURRENT_TIMESTAMP
+-- Example value: CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+
 
 INSERT INTO room_class_config (
     room_class_id,

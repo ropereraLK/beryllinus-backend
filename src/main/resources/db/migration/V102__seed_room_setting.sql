@@ -1,3 +1,6 @@
+-- REVIEW REQUIRED: Add created_at and updated_at columns with CURRENT_TIMESTAMP
+-- Example value: CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+
 -- V102__seed_room_setting.sql
 -- Generates RoomSetting records for all RoomClasses
 -- Date Range: 2026-06-09 to 2027-06-09 (inclusive)
