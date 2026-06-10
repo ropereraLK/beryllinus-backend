@@ -4,7 +4,6 @@ import com.beryllinus.backend.dto.request.BookingPrecheckRequest;
 import com.beryllinus.backend.dto.request.BookingRequest;
 import com.beryllinus.backend.dto.response.BookingPrecheckResponse;
 import com.beryllinus.backend.dto.response.BookingResponse;
-import com.beryllinus.backend.factory.RequiredArgsConstructor;
 import com.beryllinus.backend.mapper.BookingMapper;
 import com.beryllinus.backend.service.BookingService;
 import com.beryllinus.backend.validator.BookingValidator;
@@ -24,13 +23,17 @@ public class BookingController {
     private final BookingValidator bookingValidator;
 
     @PostMapping("/precheck")
-    public ResponseEntity<BookingPrecheckResponse> preCheckBooking(@Valid @RequestBody BookingPrecheckRequest bookingPrecheckRequest) {
-        return ResponseEntity.ok(bookingService.getPreCheckBooking(bookingMapper.validateBookingPrecheckRequest(bookingPrecheckRequest)));
+    public ResponseEntity<BookingPrecheckResponse> preCheckBooking(
+            @Valid @RequestBody BookingPrecheckRequest bookingPrecheckRequest) {
+        return ResponseEntity.ok(
+                bookingService.getPreCheckBooking(
+                        bookingMapper.validateBookingPrecheckRequest(bookingPrecheckRequest)));
     }
 
     @PostMapping("/temporary")
     public ResponseEntity<BookingResponse> createTemporaryBooking(
             @Valid @RequestBody BookingRequest request) {
+
         bookingValidator.validate(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
