@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class Application {
 
 	public static void main(String[] args) {
-
+// TODO: Remove
 //		System.out.println("ENV: " + System.getenv("SPRING_DATA_MONGODB_URI"));
 //		System.out.println("PROP: " + System.getProperty("SPRING_DATA_MONGODB_URI"));
 		SpringApplication.run(Application.class, args);

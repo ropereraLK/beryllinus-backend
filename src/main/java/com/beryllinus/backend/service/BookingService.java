@@ -1,11 +1,9 @@
 package com.beryllinus.backend.service;
 
+import com.beryllinus.backend.dto.RoomResponse;
 import com.beryllinus.backend.dto.request.BookingPrecheckRequest;
 import com.beryllinus.backend.dto.request.BookingRequest;
-import com.beryllinus.backend.dto.response.BookingPrecheckResponse;
-import com.beryllinus.backend.dto.response.BookingResponse;
-import com.beryllinus.backend.dto.response.PriceResponse;
-import com.beryllinus.backend.dto.response.RoomAvailabilityResponse;
+import com.beryllinus.backend.dto.response.*;
 import com.beryllinus.backend.enumuration.AggregateType;
 import com.beryllinus.backend.enumuration.BookingStatus;
 import com.beryllinus.backend.enumuration.Currency;
@@ -18,15 +16,26 @@ import com.beryllinus.backend.model.room.RoomClass;
 import com.beryllinus.backend.model.room.RoomSetting;
 import com.beryllinus.backend.repository.BookingRepository;
 import com.beryllinus.backend.repository.RoomSettingRepository;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @AllArgsConstructor
 @Service
@@ -319,4 +328,44 @@ public class BookingService {
          */
         return bookingMapper.toResponse(booking);
     }
+
+    public List<AvailabilityResponse> getBookingsByMonth(int year, Month month) {
+
+        List<RoomSetting> roomSettings =
+                roomSettingRepository.findByDateBetween(
+                        LocalDate.of(year, month, 1),
+                        YearMonth.of(year, month).atEndOfMonth()
+                );
+
+        Map<LocalDate, AvailabilityResponse> responses = new HashMap<>();
+
+        for (RoomSetting r : roomSettings) {
+
+            AvailabilityResponse response = responses.computeIfAbsent(
+                    r.getDate(),
+                    date -> AvailabilityResponse.builder()
+                            .date(date)
+                            .rooms(new ArrayList<>())
+                            .generatedAt(Instant.now())
+                            .build()
+            );
+
+            response.getRooms().add(
+                    RoomResponse.builder()
+                            .roomClassType(r.getRoomClass().getRoomClassType())
+                            .calculatedIsActive(r.isCalculatedIsActive())
+                            .calcPriceLocal(r.getCalcPriceLocal())
+                            .calcPriceLocalCurrency(r.getCalcPriceLocalCurrency())
+                            .calIsLocalBookingActive(r.isCalIsLocalBookingActive())
+                            .calcPriceInternational(r.getCalcPriceInternational())
+                            .calcPriceInternationalCurrency(r.getCalcPriceInternationalCurrency())
+                            .calcIsInternationalBookingActive(r.isCalcIsInternationalBookingActive())
+                            .build()
+            );
+        }
+
+        return new ArrayList<>(responses.values());
+    }
+
+
 }

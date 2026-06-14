@@ -42,7 +42,7 @@ spring:
 
   # Kafka Configs
   kafka:
-    bootstrap-servers: your-kafka-host.aivencloud.com:12345
+    bootstrap-servers: ${KAFKA_URI}
 
     producer:
       acks: all
@@ -51,18 +51,16 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
-      properties:
-        enable.idempotence: true
-
     properties:
-      security.protocol: SSL
+      enable.idempotence: true
 
-      ssl.truststore.location: classpath:client.truststore.jks
-      ssl.truststore.password: ${TRUSTSTORE_PASSWORD}
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-256
 
-      ssl.keystore.location: classpath:client.keystore.p12
-      ssl.keystore.password: ${KEYSTORE_PASSWORD}
-      ssl.keystore.type: PKCS12
+      sasl.jaas.config: >
+        org.apache.kafka.common.security.scram.ScramLoginModule required
+        username="${KAFKA_USER}"
+        password="${KAFKA_PWD}";
 
 management:
   endpoints:

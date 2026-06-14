@@ -1,0 +1,48 @@
+{
+  "request": {
+
+  },
+  "response": [{
+    "date": "2026-06-14",
+    "isBookingActive": true,
+    "totalRoomsAvailable": 12,
+    "totalRoomsBooked": 8,
+    "lowestRoomPriceLocal": {
+      "currency": "LKR",
+      "price": 10000.00
+    },
+    "lowestRoomPriceInternational": {
+      "currency": "USD",
+      "price": 200.00
+    },
+    "rooms": [
+      {
+        "roomClass": "LUXURY",
+        "priceLocal": {
+          "currency": "LKR",
+          "price": 10000.00
+        },
+        "priceInternational": {
+          "currency": "USD",
+          "price": 200.00
+        },
+        "bookedRooms": 4,
+        "availableRooms": 6
+      },
+      {
+        "roomClass": "STANDARD",
+        "priceLocal": {
+          "currency": "LKR",
+          "price": 9000.00
+        },
+        "priceInternational": {
+          "currency": "USD",
+          "price": 100.00
+        },
+        "bookedRooms": 4,
+        "availableRooms": 6
+      }
+    ],
+    "generatedAt": "2026-06-14T00:00:00Z"
+  }]
+}

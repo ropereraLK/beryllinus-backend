@@ -3,9 +3,7 @@ package com.beryllinus.backend.model;
 import com.beryllinus.backend.enumuration.AggregateType;
 import com.beryllinus.backend.enumuration.EventType;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Generated;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -13,6 +11,8 @@ import java.util.UUID;
 @Builder
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(
         name = "outbox_events",
         indexes = {
