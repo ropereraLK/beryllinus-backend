@@ -18,7 +18,21 @@ spring:
   cache:
     type: none
 
-    logging:
-      level:
-        org.hibernate.SQL: OFF
-        org.hibernate.orm.jdbc.bind: OFF
+logging:
+  level:
+    org.hibernate.SQL: OFF
+    org.hibernate.orm.jdbc.bind: OFF
+
+booking:
+  maxSearchDaysAhead: 364
+  maxStayLength: 30
+
+cache:
+  defaultTtl: 5m
+  roomClassesTtl: 24h
+
+kafka:
+  topics:
+    booking: booking-events
+    payment: payment-events
+    inventory: inventory-events

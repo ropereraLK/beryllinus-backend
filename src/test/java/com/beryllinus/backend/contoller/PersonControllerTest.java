@@ -5,6 +5,7 @@ import com.beryllinus.backend.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +28,9 @@ class PersonControllerTest {
 
     @MockitoBean
     private PersonService personService;
+
+    @MockitoBean
+    private CacheManager cacheManager;
 
     @Test
     void shouldReturnPeoplePage() throws Exception {

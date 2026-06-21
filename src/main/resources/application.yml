@@ -60,7 +60,7 @@ spring:
       sasl.jaas.config: >
         org.apache.kafka.common.security.scram.ScramLoginModule required
         username="${KAFKA_USER}"
-        password="${KAFKA_PWD}";
+        password="${KAFKA_PWD}"
 
 management:
   endpoints:
@@ -79,7 +79,6 @@ booking:
 cache:
   defaultTtl: 5m
   roomClassesTtl: 24h
-
 kafka:
   topics:
     booking: booking-events
