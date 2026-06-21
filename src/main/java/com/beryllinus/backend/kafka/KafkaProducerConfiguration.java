@@ -86,8 +86,4 @@ public class KafkaProducerConfiguration {
         return new KafkaTemplate<>(producerFactory());
     }
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
 }
